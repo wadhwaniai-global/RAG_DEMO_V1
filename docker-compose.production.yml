@@ -1,0 +1,195 @@
+version: '3.8'
+
+# Production Docker Compose for AWS EC2 Deployment
+# Uses EXISTING MongoDB, RabbitMQ, and Qdrant containers
+# Only deploys application services: RAG Backend, Middleware, Frontend
+
+services:
+  # ========================================
+  # Application Services Only
+  # Infrastructure (MongoDB, Qdrant, RabbitMQ) already running
+  # ========================================
+
+  # RAG Backend API (waig-rag-poc)
+  rag-backend:
+    build:
+      context: ./waig-rag-poc
+      dockerfile: Dockerfile
+    image: waig-rag-backend:latest
+    container_name: waig-rag-backend
+    restart: unless-stopped
+    environment:
+      # OpenAI Configuration
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini-2024-07-18}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-large}
+
+      # LlamaParse Configuration
+      LLAMA_CLOUD_API_KEY: ${LLAMA_CLOUD_API_KEY}
+
+      # Langfuse Configuration
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY}
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-https://langfuse.wadhwaniaiglobal.com}
+
+      # Qdrant Configuration (existing container)
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ${QDRANT_API_KEY:-}
+      QDRANT_COLLECTION_NAME: ${QDRANT_COLLECTION_NAME:-rag_documents}
+
+      # Application Configuration
+      APP_ENV: ${APP_ENV:-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      MAX_CHUNK_SIZE: ${MAX_CHUNK_SIZE:-1000}
+      CHUNK_OVERLAP: ${CHUNK_OVERLAP:-200}
+      MAX_RETRIEVALS: ${MAX_RETRIEVALS:-10}
+
+      # API Configuration
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_RELOAD: false
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./waig-rag-poc/data:/app/data
+      - ./waig-rag-poc/logs:/app/logs
+      - ./waig-rag-poc/parsed_jsons:/app/parsed_jsons
+    networks:
+      - rag_network
+      - ragnet
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Middleware API (rag-poc-middleware-app)
+  rag-middleware:
+    build:
+      context: ./rag-poc-middleware-app
+      dockerfile: Dockerfile
+    image: waig-rag-middleware:latest
+    container_name: waig-rag-middleware
+    restart: unless-stopped
+    environment:
+      # Core server configuration
+      HOST: 0.0.0.0
+      PORT: 8080
+      DEBUG: false
+      PROJECT_NAME: 'FastAPI MongoEngine App'
+
+      # Database Configuration (existing MongoDB container)
+      DATABASE_URL: mongodb://my-mongo:27017
+      DATABASE_NAME: ${DATABASE_NAME:-fastapi_db}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-}
+
+      # RabbitMQ Configuration (existing container)
+      RABBITMQ_HOST: my-rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME:-guest}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-guest}
+      RABBITMQ_VIRTUAL_HOST: /
+      CHAT_QUEUE_NAME: ${CHAT_QUEUE_NAME:-chat_processing_queue}
+
+      # External RAG API
+      RAG_API_URL: http://rag-backend:8000
+      RAG_API_ENDPOINT: /query
+      RAG_USE_QUERY_EXPANSION: ${RAG_USE_QUERY_EXPANSION:-false}
+      RAG_USE_RERANKING: ${RAG_USE_RERANKING:-true}
+
+      # Qdrant Configuration (existing container)
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_API_KEY: ${QDRANT_API_KEY:-}
+      QDRANT_COLLECTION_NAME: ${QDRANT_COLLECTION_NAME:-rag_documents}
+
+      # Security Configuration
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      LONG_ACCESS_TOKEN_EXPIRE_DAYS: ${LONG_ACCESS_TOKEN_EXPIRE_DAYS:-30}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-*}
+
+      # OpenAI API Configuration (for Whisper transcription)
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini-2024-07-18}
+      OPENAI_WHISPER_MODEL: ${OPENAI_WHISPER_MODEL:-whisper-1}
+
+      # Langfuse observability
+      LANGFUSE_SECRET_KEY: ${LANGFUSE_SECRET_KEY_MIDDLEWARE}
+      LANGFUSE_PUBLIC_KEY: ${LANGFUSE_PUBLIC_KEY_MIDDLEWARE}
+      LANGFUSE_HOST: ${LANGFUSE_HOST:-https://langfuse.wadhwaniaiglobal.com}
+
+      # Worker Configuration
+      SUPERUSER_TOKEN: ${SUPERUSER_TOKEN}
+      WORKER_ENABLED: ${WORKER_ENABLED:-true}
+
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./rag-poc-middleware-app/logs:/app/logs
+    networks:
+      - rag_network
+      - ragnet
+    depends_on:
+      rag-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend React App (rag-poc-user-app)
+  rag-frontend:
+    build:
+      context: ./rag-poc-user-app
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+        REACT_APP_AWS_ACCESS_KEY_ID: ${REACT_APP_AWS_ACCESS_KEY_ID}
+        REACT_APP_AWS_SECRET_ACCESS_KEY: ${REACT_APP_AWS_SECRET_ACCESS_KEY}
+        REACT_APP_AWS_REGION: ${REACT_APP_AWS_REGION}
+       
+    image: waig-rag-frontend:latest
+    container_name: waig-rag-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+      REACT_APP_AWS_ACCESS_KEY_ID: ${REACT_APP_AWS_ACCESS_KEY_ID}
+      REACT_APP_AWS_SECRET_ACCESS_KEY: ${REACT_APP_AWS_SECRET_ACCESS_KEY}
+      REACT_APP_AWS_REGION: ${REACT_APP_AWS_REGION:-us-east-1}
+    ports:
+      - "3000:3000"
+    networks:
+      - rag_network
+    depends_on:
+      rag-middleware:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+# ========================================
+# Networks - Connect to existing infrastructure
+# ========================================
+networks:
+  rag_network:
+    external: true
+    name: rag_network
+  ragnet:
+    external: true
+    name: ragnet
+
+# ========================================
+# No Volumes Needed
+# Using existing infrastructure containers' volumes
+# ========================================

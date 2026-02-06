@@ -1,0 +1,121 @@
+version: '3.8'
+
+# Application-only Docker Compose
+# Uses existing MongoDB, RabbitMQ, and Qdrant containers
+# Only deploys: RAG Backend, Middleware, Frontend
+
+services:
+  # ========================================
+  # RAG Backend API (waig-rag-poc)
+  # ========================================
+  rag-backend:
+    build:
+      context: ./waig-rag-poc
+      dockerfile: Dockerfile
+    image: waig-rag-backend:latest
+    container_name: waig-rag-backend
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Qdrant Configuration (existing container)
+      QDRANT_URL: http://waig-rag-qdrant:6333
+
+      # API Configuration
+      API_HOST: 0.0.0.0
+      API_PORT: 8000
+      API_RELOAD: false
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./waig-rag-poc/data:/app/data
+      - ./waig-rag-poc/logs:/app/logs
+      - ./waig-rag-poc/parsed_jsons:/app/parsed_jsons
+    external_links:
+      - waig-rag-qdrant:waig-rag-qdrant
+    network_mode: bridge
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ========================================
+  # Middleware API (rag-poc-middleware-app)
+  # ========================================
+  rag-middleware:
+    build:
+      context: ./rag-poc-middleware-app
+      dockerfile: Dockerfile
+    image: waig-rag-middleware:latest
+    container_name: waig-rag-middleware
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      # Core server configuration
+      HOST: 0.0.0.0
+      PORT: 8080
+      DEBUG: false
+
+      # Database Configuration (existing MongoDB container)
+      DATABASE_URL: mongodb://mongodb:27017
+
+      # RabbitMQ Configuration (existing container)
+      RABBITMQ_HOST: rabbitmq
+
+      # External RAG API
+      RAG_API_URL: http://rag-backend:8000
+
+      # Qdrant Configuration (existing container)
+      QDRANT_URL: http://waig-rag-qdrant:6333
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./rag-poc-middleware-app/logs:/app/logs
+    external_links:
+      - mongodb:mongodb
+      - rabbitmq:rabbitmq
+      - waig-rag-qdrant:waig-rag-qdrant
+      - waig-rag-backend:rag-backend
+    network_mode: bridge
+    depends_on:
+      - rag-backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # ========================================
+  # Frontend React App (rag-poc-user-app)
+  # ========================================
+  rag-frontend:
+    build:
+      context: ./rag-poc-user-app
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+    image: waig-rag-frontend:latest
+    container_name: waig-rag-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+    ports:
+      - "3000:3000"
+    external_links:
+      - waig-rag-middleware:rag-middleware
+    network_mode: bridge
+    depends_on:
+      - rag-middleware
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s

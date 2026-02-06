@@ -1,0 +1,399 @@
+{
+  "document_name": "ASHA Activities Guide",
+  "document_filter": "asha_v1",
+  "pages": [
+    {
+      "page": 1,
+      "text": "   An ASHA's Activities\n\n\n\n\n   An ASHA is a facilitator, that is, she helps the\n   village community to access health services\n   provided by the government.\n\n\n\n\n\n\n\n\n\n\n   An ASHA is  a community         mobilizer who\n   involves the community in securing their health\n   rights to lead to better health.\n\n\n\n\n\n\n\n\n\n\n   In some cases, an ASHA is also the health care\n   provider. For example, she counsels on child\n   feeding or provides appropriate home care for\n   diarrhoea and other common illnesses using her\n   drug kit.\n\n\n\n\n\n\n\n   Making home visits to families in her area is one\n   of the most important activities of an ASHA. This\n   gives her an opportunity   to    communicate\n   important health messages and    to establish   a\n   rapport with the families living in the village.\n\n\n\n\n\nPDF compression, OCR, web optimization using a watermarked evaluation copy of CVISION PDFCompressor",
+      "md": "\n# An ASHA's Activities\n\nAn ASHA is a **facilitator**, that is, she helps the village community to access health services provided by the government.\n\nAn ASHA is a **community mobilizer** who involves the community in securing their health rights to lead to better health.\n\nIn some cases, an ASHA is also the **health care provider.** For example, she counsels on child feeding or provides appropriate home care for diarrhoea and other common illnesses using her drug kit.\n\nMaking **home visits** to families in her area is one of the most important activities of an ASHA. This gives her an opportunity to communicate important health messages and to establish a rapport with the families living in the village.\n",
+      "images": [
+        {
+          "name": "img_p0_1.jpg",
+          "height": 166.846,
+          "width": 210.284,
+          "x": 28.278,
+          "y": 101.837,
+          "original_width": 37,
+          "original_height": 29,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_2.jpg",
+          "height": 166.846,
+          "width": 210.284,
+          "x": 28.278,
+          "y": 101.837,
+          "original_width": 18,
+          "original_height": 14,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_3.jpg",
+          "height": 166.855,
+          "width": 210.344,
+          "x": 28.273,
+          "y": 461.851,
+          "original_width": 146,
+          "original_height": 116,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_4.jpg",
+          "height": 46.997,
+          "width": 45.669,
+          "x": 28.414,
+          "y": 26.653,
+          "original_width": 32,
+          "original_height": 33,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_5.png",
+          "height": 49.306,
+          "width": 70.19,
+          "x": 496.672,
+          "y": 25.499,
+          "original_width": 49,
+          "original_height": 34,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_6.jpg",
+          "height": 33.935,
+          "width": 48.146,
+          "x": 509.144,
+          "y": 32.459,
+          "original_width": 33,
+          "original_height": 24,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_8.jpg",
+          "height": 39.736,
+          "width": 60.909,
+          "x": 502.666,
+          "y": 26.465,
+          "original_width": 42,
+          "original_height": 28,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_9.jpg",
+          "height": 167.112,
+          "width": 210.33,
+          "x": 28.335,
+          "y": 641.722,
+          "original_width": 146,
+          "original_height": 116,
+          "rotation": 0
+        },
+        {
+          "name": "img_p0_10.jpg",
+          "height": 167.113,
+          "width": 210.304,
+          "x": 28.35,
+          "y": 281.503,
+          "original_width": 146,
+          "original_height": 116,
+          "rotation": 0
+        },
+        {
+          "name": "page_1.jpg",
+          "height": 841.89,
+          "width": 595.276,
+          "x": 0,
+          "y": 0,
+          "original_width": 2263,
+          "original_height": 3200,
+          "rotation": 0,
+          "type": "full_page_screenshot"
+        }
+      ],
+      "charts": [],
+      "items": [
+        {
+          "type": "heading",
+          "lvl": 1,
+          "value": "An ASHA's Activities",
+          "md": "# An ASHA's Activities",
+          "bBox": {
+            "x": 138.48,
+            "y": 34.02,
+            "w": 414.21,
+            "h": 687.05
+          }
+        },
+        {
+          "type": "text",
+          "value": "An ASHA is a **facilitator**, that is, she helps the village community to access health services provided by the government.",
+          "md": "An ASHA is a **facilitator**, that is, she helps the village community to access health services provided by the government.",
+          "bBox": {
+            "x": 257.77,
+            "y": 133.95,
+            "w": 294.94,
+            "h": 587.12
+          }
+        },
+        {
+          "type": "text",
+          "value": "An ASHA is a **community mobilizer** who involves the community in securing their health rights to lead to better health.",
+          "md": "An ASHA is a **community mobilizer** who involves the community in securing their health rights to lead to better health.",
+          "bBox": {
+            "x": 257.77,
+            "y": 133.95,
+            "w": 294.94,
+            "h": 587.12
+          }
+        },
+        {
+          "type": "text",
+          "value": "In some cases, an ASHA is also the **health care provider.** For example, she counsels on child feeding or provides appropriate home care for diarrhoea and other common illnesses using her drug kit.",
+          "md": "In some cases, an ASHA is also the **health care provider.** For example, she counsels on child feeding or provides appropriate home care for diarrhoea and other common illnesses using her drug kit.",
+          "bBox": {
+            "x": 257.77,
+            "y": 133.95,
+            "w": 294.94,
+            "h": 587.12
+          }
+        },
+        {
+          "type": "text",
+          "value": "Making **home visits** to families in her area is one of the most important activities of an ASHA. This gives her an opportunity to communicate important health messages and to establish a rapport with the families living in the village.",
+          "md": "Making **home visits** to families in her area is one of the most important activities of an ASHA. This gives her an opportunity to communicate important health messages and to establish a rapport with the families living in the village.",
+          "bBox": {
+            "x": 257.76,
+            "y": 133.95,
+            "w": 294.93,
+            "h": 604.62
+          }
+        }
+      ],
+      "status": "OK",
+      "originalOrientationAngle": 0,
+      "links": [
+        {
+          "url": "http://www.cvisiontech.com/",
+          "unsafeUrl": "http://www.cvisiontech.com",
+          "text": "PDF  compression,  OCR,  web  optimization  using  a  watermarked  evaluation  copy  of  CVISION  PDFCompressor"
+        }
+      ],
+      "width": 595.2756,
+      "height": 841.8898,
+      "triggeredAutoMode": false,
+      "parsingMode": "premium",
+      "structuredData": null,
+      "noStructuredContent": false,
+      "noTextContent": false,
+      "pageHeaderMarkdown": "",
+      "pageFooterMarkdown": "",
+      "slideSpeakerNotes": null,
+      "slideSectionName": null,
+      "confidence": 1
+    },
+    {
+      "page": 2,
+      "text": "   An ASHA's Activities\n\n\n\n\n   Such visits are absolutely essential if there is a\n   pregnant woman, newborn or a child below\n   two in a family. During these visits, she should\n   assess the health status of the woman and child,\n   and counsel the family about the care they need to\n   take.\n\n\n\n\n   Tig Hath and\n               Apart from home visits, the ASHA also has to\n               attend the Village Health and Nutrition Day\n               held every month. She should ensure that the\n               people in her village also attend, and access the\n               services provided, such as immunisation and\n               check-up of pregnant women.\n\n\n\n\n\n\n   Occasionally, the ASHA has to visit the health\n   facility  (PHC/CHC or  district  hospital),\n   accompanying a pregnant woman for delivery or a\n   child who needs urgent treatment.\n\n\n\n\n\n\n\n\n\n   The ASHA is expected to hold village level\n   meetings regularly. She participates in meetings\n   of the Village Health and Sanitation Committee,\n   and of women's groups. These are occasions for\n   her to create awareness in the community about\n   common health problems, and how they can be\n   prevented and managed at the community level.\n\n\nPDF compression, OCR, web optimization using a watermarked evaluation copy of CVISION PDFCompressor",
+      "md": "\n# An ASHA's Activities\n\nSuch visits are absolutely essential if there is a **pregnant woman, newborn or a child below two** in a family. During these visits, she should assess the health status of the woman and child, and counsel the family about the care they need to take.\n\nApart from home visits, the ASHA also has to **attend the Village Health and Nutrition Day** held every month. She should ensure that the people in her village also attend, and access the services provided, such as immunisation and check-up of pregnant women.\n\nOccasionally, the ASHA has to **visit the health facility** (PHC/CHC or district hospital), accompanying a pregnant woman for delivery or a child who needs urgent treatment.\n\nThe ASHA is expected to **hold village level meetings** regularly. She participates in meetings of the Village Health and Sanitation Committee, and of women's groups. These are occasions for her to create awareness in the community about common health problems, and how they can be prevented and managed at the community level.\n",
+      "images": [
+        {
+          "name": "img_p1_1.jpg",
+          "height": 46.997,
+          "width": 45.669,
+          "x": 28.414,
+          "y": 26.653,
+          "original_width": 32,
+          "original_height": 33,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_2.png",
+          "height": 49.306,
+          "width": 70.19,
+          "x": 496.672,
+          "y": 25.499,
+          "original_width": 49,
+          "original_height": 34,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_3.jpg",
+          "height": 33.935,
+          "width": 48.146,
+          "x": 509.144,
+          "y": 32.459,
+          "original_width": 33,
+          "original_height": 24,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_5.jpg",
+          "height": 39.736,
+          "width": 60.909,
+          "x": 502.666,
+          "y": 26.465,
+          "original_width": 42,
+          "original_height": 28,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_6.jpg",
+          "height": 167.125,
+          "width": 210.498,
+          "x": 28.252,
+          "y": 281.471,
+          "original_width": 147,
+          "original_height": 116,
+          "rotation": 0,
+          "ocr": [
+            {
+              "x": 33,
+              "y": 0,
+              "w": 39,
+              "h": 6,
+              "confidence": 0.689,
+              "text": "Tig Hath and"
+            }
+          ]
+        },
+        {
+          "name": "img_p1_7.jpg",
+          "height": 166.987,
+          "width": 210.257,
+          "x": 28.262,
+          "y": 461.324,
+          "original_width": 146,
+          "original_height": 116,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_8.jpg",
+          "height": 166.922,
+          "width": 210.387,
+          "x": 28.311,
+          "y": 641.673,
+          "original_width": 146,
+          "original_height": 116,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_9.jpg",
+          "height": 166.954,
+          "width": 210.244,
+          "x": 28.298,
+          "y": 101.748,
+          "original_width": 37,
+          "original_height": 29,
+          "rotation": 0
+        },
+        {
+          "name": "img_p1_10.jpg",
+          "height": 166.954,
+          "width": 210.244,
+          "x": 28.298,
+          "y": 101.748,
+          "original_width": 18,
+          "original_height": 14,
+          "rotation": 0
+        },
+        {
+          "name": "page_2.jpg",
+          "height": 841.89,
+          "width": 595.276,
+          "x": 0,
+          "y": 0,
+          "original_width": 2263,
+          "original_height": 3200,
+          "rotation": 0,
+          "type": "full_page_screenshot"
+        }
+      ],
+      "charts": [],
+      "items": [
+        {
+          "type": "heading",
+          "lvl": 1,
+          "value": "An ASHA's Activities",
+          "md": "# An ASHA's Activities",
+          "bBox": {
+            "x": 138.48,
+            "y": 34.02,
+            "w": 319.37,
+            "h": 344.22
+          }
+        },
+        {
+          "type": "text",
+          "value": "Such visits are absolutely essential if there is a **pregnant woman, newborn or a child below two** in a family. During these visits, she should assess the health status of the woman and child, and counsel the family about the care they need to take.",
+          "md": "Such visits are absolutely essential if there is a **pregnant woman, newborn or a child below two** in a family. During these visits, she should assess the health status of the woman and child, and counsel the family about the care they need to take.",
+          "bBox": {
+            "x": 257.76,
+            "y": 116.45,
+            "w": 294.95,
+            "h": 551.89
+          }
+        },
+        {
+          "type": "text",
+          "value": "Apart from home visits, the ASHA also has to **attend the Village Health and Nutrition Day** held every month. She should ensure that the people in her village also attend, and access the services provided, such as immunisation and check-up of pregnant women.",
+          "md": "Apart from home visits, the ASHA also has to **attend the Village Health and Nutrition Day** held every month. She should ensure that the people in her village also attend, and access the services provided, such as immunisation and check-up of pregnant women.",
+          "bBox": {
+            "x": 257.77,
+            "y": 296.24,
+            "w": 294.94,
+            "h": 372.1
+          }
+        },
+        {
+          "type": "text",
+          "value": "Occasionally, the ASHA has to **visit the health facility** (PHC/CHC or district hospital), accompanying a pregnant woman for delivery or a child who needs urgent treatment.",
+          "md": "Occasionally, the ASHA has to **visit the health facility** (PHC/CHC or district hospital), accompanying a pregnant woman for delivery or a child who needs urgent treatment.",
+          "bBox": {
+            "x": 257.76,
+            "y": 366.24,
+            "w": 294.93,
+            "h": 302.1
+          }
+        },
+        {
+          "type": "text",
+          "value": "The ASHA is expected to **hold village level meetings** regularly. She participates in meetings of the Village Health and Sanitation Committee, and of women's groups. These are occasions for her to create awareness in the community about common health problems, and how they can be prevented and managed at the community level.",
+          "md": "The ASHA is expected to **hold village level meetings** regularly. She participates in meetings of the Village Health and Sanitation Committee, and of women's groups. These are occasions for her to create awareness in the community about common health problems, and how they can be prevented and managed at the community level.",
+          "bBox": {
+            "x": 257.76,
+            "y": 366.24,
+            "w": 294.94,
+            "h": 407.1
+          }
+        }
+      ],
+      "status": "OK",
+      "originalOrientationAngle": 0,
+      "links": [
+        {
+          "url": "http://www.cvisiontech.com/",
+          "unsafeUrl": "http://www.cvisiontech.com",
+          "text": "PDF  compression,  OCR,  web  optimization  using  a  watermarked  evaluation  copy  of  CVISION  PDFCompressor"
+        }
+      ],
+      "width": 595.2756,
+      "height": 841.8898,
+      "triggeredAutoMode": false,
+      "parsingMode": "premium",
+      "structuredData": null,
+      "noStructuredContent": false,
+      "noTextContent": false,
+      "pageHeaderMarkdown": "",
+      "pageFooterMarkdown": "",
+      "slideSpeakerNotes": null,
+      "slideSectionName": null,
+      "confidence": 1
+    }
+  ],
+  "job_metadata": {
+    "credits_used": 0,
+    "job_credits_usage": 0,
+    "job_pages": 2,
+    "job_auto_mode_triggered_pages": 0,
+    "job_is_cache_hit": false
+  }
+}

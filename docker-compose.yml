@@ -1,0 +1,237 @@
+version: '3.8'
+
+# Production-ready Docker Compose for AWS EC2 Deployment
+# WAIG RAG Healthcare Assistant System
+
+services:
+  # ========================================
+  # Infrastructure Services
+  # ========================================
+
+  # MongoDB Database
+  mongodb:
+    image: mongo:6
+    container_name: waig-mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-changeme123}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE:-fastapi_db}
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - rag_network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Qdrant Vector Store
+  qdrant:
+    image: qdrant/qdrant:v1.9.0
+    container_name: waig-qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    networks:
+      - rag_network
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/localhost/6333'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # RabbitMQ Message Queue
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: waig-rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-changeme123}
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - rag_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # ========================================
+  # Application Services
+  # ========================================
+
+  # RAG Backend API (waig-rag-poc)
+  rag-backend:
+    build:
+      context: ./waig-rag-poc
+      dockerfile: Dockerfile
+    image: waig-rag-backend:latest
+    container_name: waig-rag-backend
+    restart: unless-stopped
+    environment:
+      # OpenAI Configuration
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini-2024-07-18}
+      OPENAI_EMBEDDING_MODEL: ${OPENAI_EMBEDDING_MODEL:-text-embedding-3-large}
+
+      # LlamaParse Configuration
+      LLAMA_CLOUD_API_KEY: ${LLAMA_CLOUD_API_KEY}
+
+      # Qdrant Configuration
+      QDRANT_URL: http://qdrant:6333
+      QDRANT_COLLECTION: ${QDRANT_COLLECTION:-healthcare_documents}
+
+      # Server Configuration
+      HOST: 0.0.0.0
+      PORT: 8000
+      API_PORT: 8000
+      WORKERS: ${RAG_WORKERS:-4}
+
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./waig-rag-poc/data:/app/data
+      - ./waig-rag-poc/logs:/app/logs
+      - ./waig-rag-poc/parsed_jsons:/app/parsed_jsons
+    networks:
+      - rag_network
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Middleware API (rag-poc-middleware-app)
+  rag-middleware:
+    build:
+      context: ./rag-poc-middleware-app
+      dockerfile: Dockerfile
+    image: waig-rag-middleware:latest
+    container_name: waig-rag-middleware
+    restart: unless-stopped
+    environment:
+      # OpenAI Configuration
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+
+      # Database Configuration
+      DATABASE_URL: mongodb://mongodb:27017
+      DATABASE_NAME: ${MONGO_DATABASE:-fastapi_db}
+
+      # RabbitMQ Configuration
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD:-changeme123}
+      RABBITMQ_QUEUE: ${RABBITMQ_QUEUE:-rag_chat_queue}
+
+      # RAG Backend Configuration
+      RAG_API_URL: http://rag-backend:8000
+
+      # JWT Configuration
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
+      ALGORITHM: HS256
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${TOKEN_EXPIRE_MINUTES:-1440}
+
+      # Worker Configuration
+      WORKER_ENABLED: ${WORKER_ENABLED:-true}
+      WORKER_POLL_INTERVAL: ${WORKER_POLL_INTERVAL:-1}
+
+      # Superuser Configuration
+      SUPERUSER_TOKEN: ${SUPERUSER_TOKEN}
+
+      # Server Configuration
+      HOST: 0.0.0.0
+      PORT: 8080
+
+      # Logging
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./rag-poc-middleware-app/logs:/app/logs
+    networks:
+      - rag_network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      rag-backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend React App (rag-poc-user-app)
+  rag-frontend:
+    build:
+      context: ./rag-poc-user-app
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+    image: waig-rag-frontend:latest
+    container_name: waig-rag-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      REACT_APP_API_URL: ${REACT_APP_API_URL:-http://localhost:8080}
+    ports:
+      - "3000:3000"
+    networks:
+      - rag_network
+    depends_on:
+      rag-middleware:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+# ========================================
+# Networks
+# ========================================
+networks:
+  rag_network:
+    driver: bridge
+
+# ========================================
+# Volumes (Persistent Data)
+# ========================================
+volumes:
+  mongodb_data:
+    driver: local
+  mongodb_config:
+    driver: local
+  qdrant_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
