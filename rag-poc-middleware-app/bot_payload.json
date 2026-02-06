@@ -1,0 +1,27 @@
+﻿{
+  "name": "Asha-bot",
+  "email": "asha@example.com",
+  "description": "Asha's Intelligent RAG-powered assistant",
+  "user_type": "bot",
+  "document_filter": [
+    "ASHA Incentives 2024-2025",
+    "ASHA Activities Guide",
+    "ASHA Incentives April 2024",
+    "ASHA NCD Module",
+    "ASHA Booklet 2022",
+    "asha_v1",
+    "ENT Care Training Manual for MPW",
+    "Eye Care Training Manual for ASHA",
+    "FAQ_on_Immunization_for_Health_Workers-English",
+    "ASHA_Handbook-Mobilizing_for_Action_on_Violence_against_Women_English",
+    "ASHA_Induction_Module_English",
+    "book-no-1",
+    "book-no-2",
+    "book-no-3",
+    "book-no-4",
+    "book-no-5",
+    "book-no-6",
+    "book-no-7",
+    "Reaching_The_Unreached_Brochure_for_ASHA"
+  ]
+}
