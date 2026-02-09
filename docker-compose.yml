@@ -139,6 +139,8 @@ services:
       # Database Configuration
       DATABASE_URL: mongodb://mongodb:27017
       DATABASE_NAME: ${MONGO_DATABASE:-fastapi_db}
+      DATABASE_USERNAME: ${MONGO_ROOT_USERNAME:-admin}
+      DATABASE_PASSWORD: ${MONGO_ROOT_PASSWORD:-changeme123}
 
       # RabbitMQ Configuration
       RABBITMQ_HOST: rabbitmq

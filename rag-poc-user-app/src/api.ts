@@ -1,7 +1,8 @@
 import { SubmitQueryRequest, SubmitQueryResponse, GetMessagesRequest, GetMessagesResponse, LoginRequest, LoginResponse, JWTPayload, GetConversationsResponse } from './types';
 
 // API Configuration
-const API_BASE_URL = 'https://healthcare-agents.wadhwaniaiglobal.com/api/v1';
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+const API_BASE_URL = `${BASE_URL.replace(/\/$/, '')}/api/v1`;
 
 
 // Pagination size for message fetches (can be adjusted)
